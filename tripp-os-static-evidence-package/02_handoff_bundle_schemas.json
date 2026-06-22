@@ -1,0 +1,180 @@
+{
+  "$schema": "internal/tripp-os-trace-queue-handoff-schemas-v1",
+  "description": "JSON schemas for queue operator handoff bundle files. All fields are required unless marked optional.",
+
+  "queue_mode_summary": {
+    "$schema": "internal/tripp-os-trace-queue-handoff-v1",
+    "producer": "tripp-os-runtime-trace",
+    "package_name": "@tripp-os/runtime-trace",
+    "package_version": "0.1.0",
+    "generated_at": "<ISO timestamp>",
+    "contract_classification": "internal-tripp-os-runtime-trace",
+    "contract_classification_valid_values": ["internal-tripp-os-runtime-trace"],
+    "default_mode": "untraced",
+    "default_mode_valid_values": ["untraced"],
+    "mutation_capability": "none",
+    "mutation_capability_valid_values": ["none"],
+    "remote_capability": "none",
+    "remote_capability_valid_values": ["none"],
+    "live_agent_capability": "none",
+    "live_agent_capability_valid_values": ["none"],
+    "rollback_available": true,
+    "consumer_permissions": ["string[]"],
+    "consumer_forbidden_actions": ["string[] (min 1 item)"],
+    "traced_mode_requires": ["string[] (min 1 item)"],
+    "queue_mode_options": {
+      "untraced": {
+        "default": true,
+        "latency_overhead_ms": "number",
+        "features": ["string[]"],
+        "requirements": ["string[]"]
+      },
+      "traced": {
+        "default": false,
+        "latency_overhead_ms_p50": "number",
+        "disk_overhead_per_event_bytes": "number",
+        "compressed_disk_overhead_per_event_bytes": "number",
+        "features": ["string[]"],
+        "requirements": ["string[]"]
+      }
+    },
+    "validation_summary": {
+      "typecheck": "pass|fail",
+      "build": "pass|fail",
+      "tests_total": "number",
+      "tests_passing": "number",
+      "tests_failing": "number"
+    },
+    "fail_closed_conditions": [
+      "contract_classification !== 'internal-tripp-os-runtime-trace'",
+      "default_mode !== 'untraced'",
+      "mutation_capability !== 'none'",
+      "remote_capability !== 'none'",
+      "live_agent_capability !== 'none'",
+      "rollback_available !== true",
+      "consumer_forbidden_actions.length === 0",
+      "traced_mode_requires.length === 0 (warning only)"
+    ]
+  },
+
+  "validation_results": {
+    "$schema": "internal/tripp-os-trace-queue-handoff-v1",
+    "typecheck": "pass|fail",
+    "build": "pass|fail",
+    "tests_total": "number",
+    "tests_passing": "number",
+    "tests_failing": "number",
+    "suites": "number (optional)",
+    "fixture_scenarios": "number (optional)",
+    "fixture_scenarios_passing": "number (optional)",
+    "safety_search": "clean|dirty (optional)"
+  },
+
+  "operator_decision_packet": {
+    "$schema": "internal/tripp-os-trace-queue-handoff-v1",
+    "producer": "tripp-os-runtime-trace",
+    "package_name": "@tripp-os/runtime-trace",
+    "package_version": "0.1.0",
+    "generated_at": "<ISO timestamp>",
+    "decisions": [
+      {
+        "id": "APPROVE_STAGING_TRACED_QUEUE|KEEP_UNTRACED_QUEUE|REQUEST_MORE_FIXTURES|BLOCK_TRACED_QUEUE",
+        "label": "string",
+        "description": "string",
+        "required_evidence": ["string[] (min 1)"],
+        "forbidden_assumptions": ["string[] (min 1)"],
+        "next_marker": "string"
+      }
+    ],
+    "fail_closed_conditions": [
+      "decisions.length !== 4",
+      "Any decision missing required_evidence",
+      "Any decision missing forbidden_assumptions",
+      "Any decision missing next_marker"
+    ]
+  },
+
+  "trace_config_summary": {
+    "$schema": "internal/tripp-os-trace-queue-handoff-v1",
+    "producer": "tripp-os-runtime-trace",
+    "ledger_file_name": "string",
+    "checksum_algorithm": "sha256",
+    "environments": {
+      "development": {
+        "fsyncOnAppend": false,
+        "checksumEnabled": true,
+        "rotationEnabled": true,
+        "maxLedgerBytes": "number",
+        "maxLedgerFiles": "number"
+      },
+      "staging": {
+        "fsyncOnAppend": false,
+        "checksumEnabled": true,
+        "rotationEnabled": true,
+        "maxLedgerBytes": "number",
+        "maxLedgerFiles": "number"
+      },
+      "production": {
+        "fsyncOnAppend": true,
+        "checksumEnabled": true,
+        "rotationEnabled": true,
+        "maxLedgerBytes": 52428800,
+        "maxLedgerFiles": 30
+      }
+    },
+    "notes": ["string[]"]
+  },
+
+  "safety_boundary_checklist": {
+    "format": "markdown table",
+    "required_sections": [
+      "Boundary",
+      "Status (HELD|BREACHED)",
+      "Evidence"
+    ],
+    "required_boundaries": [
+      "No default tracing (untraced is default)",
+      "No env var activation (explicit config only)",
+      "No live agents spawned",
+      "No remote/server/API behavior",
+      "No Tripp.Control writes",
+      "No Tripp.Reason writes",
+      "No shared-agent-bus mutation outside queue ops",
+      "No command execution",
+      "No watchers/polling/timers",
+      "Internal Tripp.OS contract only"
+    ],
+    "fail_closed_conditions": [
+      "Any boundary marked BREACHED",
+      "Fewer than 10 boundaries listed"
+    ]
+  },
+
+  "bundle_validation_rules": {
+    "required_files": [
+      "README-TRACE-QUEUE-HANDOFF.md",
+      "queue-mode-summary.json",
+      "queue-mode-summary.md",
+      "trace-config-summary.json",
+      "rollback-plan.md",
+      "validation-results.json",
+      "safety-boundary-checklist.md",
+      "sample-trace-events.json",
+      "operator-decision-packet.json"
+    ],
+    "secret_detection_patterns": [
+      "BEGIN (RSA )?PRIVATE KEY",
+      "password\\s*[=:]\\s*['\"][^'\"]+['\"]",
+      "token\\s*[=:]\\s*['\"][^'\"]+['\"]",
+      "secret\\s*[=:]\\s*['\"][^'\"]+['\"]",
+      "api_key\\s*[=:]\\s*['\"][^'\"]+['\"]",
+      "AKIA[0-9A-Z]{16}",
+      "ghp_[a-zA-Z0-9]{36}"
+    ],
+    "forbidden_paths": [
+      "/shared-agent-bus/",
+      "/tripp.control/",
+      "/tripp.reason/"
+    ]
+  }
+}

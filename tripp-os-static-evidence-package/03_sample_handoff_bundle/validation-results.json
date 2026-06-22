@@ -1,0 +1,12 @@
+{
+  "$schema": "internal/tripp-os-trace-queue-handoff-v1",
+  "typecheck": "pass",
+  "build": "pass",
+  "tests_total": 291,
+  "tests_passing": 291,
+  "tests_failing": 0,
+  "suites": 88,
+  "fixture_scenarios": 11,
+  "fixture_scenarios_passing": 11,
+  "safety_search": "clean"
+}

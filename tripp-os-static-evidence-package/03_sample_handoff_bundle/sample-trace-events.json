@@ -1,0 +1,82 @@
+[
+  {
+    "eventId": "sample-pkt-created-001",
+    "eventType": "packet_created",
+    "createdAt": "2026-06-07T23:24:31.614Z",
+    "actorType": "openclaw_tripp",
+    "actorId": "tripp-staging-1",
+    "runId": "staging-run-abc123",
+    "packetId": "staging-pkt-001",
+    "agentRole": "openclaw_tripp",
+    "trustZone": "local_audit_warden",
+    "summary": "Task packet written: Staging Test Task",
+    "tags": [
+      "staging",
+      "controlled-test"
+    ]
+  },
+  {
+    "eventId": "sample-pkt-read-001",
+    "eventType": "packet_read",
+    "createdAt": "2026-06-07T23:24:31.614Z",
+    "actorType": "openclaw_tripp",
+    "actorId": "tripp-staging-1",
+    "runId": "staging-run-abc123",
+    "packetId": "staging-pkt-001",
+    "agentRole": "openclaw_tripp",
+    "trustZone": "local_audit_warden",
+    "summary": "Pending task read",
+    "tags": [
+      "staging",
+      "controlled-test"
+    ]
+  },
+  {
+    "eventId": "sample-pkt-claimed-001",
+    "eventType": "packet_claimed",
+    "createdAt": "2026-06-07T23:24:31.614Z",
+    "actorType": "openclaw_tripp",
+    "actorId": "tripp-staging-1",
+    "runId": "staging-run-abc123",
+    "packetId": "staging-pkt-001",
+    "agentRole": "openclaw_tripp",
+    "trustZone": "local_audit_warden",
+    "summary": "Task claimed by tripp-staging-1",
+    "tags": [
+      "staging",
+      "controlled-test"
+    ]
+  },
+  {
+    "eventId": "sample-result-written-001",
+    "eventType": "result_written",
+    "createdAt": "2026-06-07T23:24:31.614Z",
+    "actorType": "openclaw_tripp",
+    "actorId": "tripp-staging-1",
+    "runId": "staging-run-abc123",
+    "packetId": "staging-pkt-001",
+    "agentRole": "openclaw_tripp",
+    "trustZone": "local_audit_warden",
+    "summary": "Result written: staging-res-001",
+    "tags": [
+      "staging",
+      "controlled-test"
+    ]
+  },
+  {
+    "eventId": "sample-verdict-001",
+    "eventType": "warden_verdict_recorded",
+    "createdAt": "2026-06-07T23:24:31.614Z",
+    "actorType": "openclaw_tripp",
+    "actorId": "tripp-staging-1",
+    "runId": "staging-run-abc123",
+    "packetId": "staging-pkt-001",
+    "agentRole": "openclaw_tripp",
+    "trustZone": "local_audit_warden",
+    "summary": "Verdict: pass",
+    "tags": [
+      "staging",
+      "controlled-test"
+    ]
+  }
+]

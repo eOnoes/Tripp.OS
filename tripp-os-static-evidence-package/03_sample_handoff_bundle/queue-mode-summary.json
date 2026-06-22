@@ -1,0 +1,80 @@
+{
+  "$schema": "internal/tripp-os-trace-queue-handoff-v1",
+  "producer": "tripp-os-runtime-trace",
+  "package_name": "@tripp-os/runtime-trace",
+  "package_version": "0.1.0",
+  "generated_at": "2026-06-07T23:24:31.614Z",
+  "contract_classification": "internal-tripp-os-runtime-trace",
+  "default_mode": "untraced",
+  "mutation_capability": "none",
+  "remote_capability": "none",
+  "live_agent_capability": "none",
+  "rollback_available": true,
+  "consumer_permissions": [
+    "enqueue-task",
+    "read-pending-task",
+    "claim-task",
+    "write-result",
+    "write-review",
+    "archive-packet",
+    "reject-packet",
+    "emit-status-snapshot"
+  ],
+  "consumer_forbidden_actions": [
+    "enable-default-tracing",
+    "enable-env-var-activation",
+    "mutate-trace-files",
+    "mutate-packet-files",
+    "delete-trace-files",
+    "infer-live-state-from-static-bundle",
+    "treat-dashboard-as-live-monitor",
+    "enable-tracing-without-operator-approval",
+    "mutate-shared-agent-bus-outside-queue-ops"
+  ],
+  "traced_mode_requires": [
+    "operator-approval",
+    "explicit-adapter-construction",
+    "isolated-trace-root",
+    "checksum-enabled",
+    "rotation-enabled",
+    "rollback-verified"
+  ],
+  "queue_mode_options": {
+    "untraced": {
+      "default": true,
+      "latency_overhead_ms": 0.04,
+      "features": [
+        "packet-ops",
+        "no-overhead"
+      ],
+      "requirements": [
+        "none"
+      ]
+    },
+    "traced": {
+      "default": false,
+      "latency_overhead_ms_p50": 0.27,
+      "disk_overhead_per_event_bytes": 153,
+      "compressed_disk_overhead_per_event_bytes": 6,
+      "features": [
+        "packet-ops",
+        "automatic-tracing",
+        "rollback-support",
+        "checksum-protection",
+        "rotation"
+      ],
+      "requirements": [
+        "operator-approval",
+        "trace-root-directory",
+        "explicit-adapter"
+      ]
+    }
+  },
+  "validation_summary": {
+    "typecheck": "pass",
+    "build": "pass",
+    "tests_total": 291,
+    "tests_passing": 291,
+    "tests_failing": 0
+  }
+}

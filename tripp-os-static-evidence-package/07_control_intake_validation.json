@@ -1,0 +1,214 @@
+{
+  "$schema": "internal/tripp-os-control-intake-validation-v1",
+  "description": "Validation rules for Tripp.Control when consuming Tripp.OS evidence packages",
+
+  "valid_package_rules": {
+    "required_artifacts": [
+      "01_state_manifest.json",
+      "02_handoff_bundle_schemas.json",
+      "03_sample_handoff_bundle/",
+      "04_production_readiness_summary.md",
+      "05_rollout_plan_summary.md",
+      "06_marker_glossary.json",
+      "07_control_intake_validation.json",
+      "08_boundary_statement.md"
+    ],
+    "required_manifest_fields": [
+      "package.name",
+      "package.version",
+      "package.classification",
+      "current_state.marker",
+      "current_state.decision",
+      "current_state.lane_status",
+      "test_totals.total_tests",
+      "test_totals.passing",
+      "safety_boundaries.status"
+    ],
+    "manifest_classification": {
+      "required_value": "internal-tripp-os-runtime-trace",
+      "action_if_mismatch": "REJECT_PACKAGE"
+    },
+    "test_minimum_threshold": {
+      "minimum_tests": 200,
+      "minimum_passing_ratio": 1.0,
+      "action_if_below": "FLAG_FOR_REVIEW"
+    },
+    "safety_boundaries_required": {
+      "minimum_held": 10,
+      "action_if_below": "REJECT_PACKAGE"
+    }
+  },
+
+  "staleness_rules": {
+    "max_age_hours": 168,
+    "field": "current_state.generated_at",
+    "action_if_stale": "REQUEST_FRESH_PACKAGE",
+    "stale_warning_threshold_hours": 72
+  },
+
+  "blocked_package_conditions": {
+    "hard_blocks": [
+      {
+        "condition": "safety_boundaries.status contains BREACHED",
+        "action": "REJECT_IMMEDIATELY"
+      },
+      {
+        "condition": "test_totals.failing > 0",
+        "action": "REJECT_IMMEDIATELY"
+      },
+      {
+        "condition": "known_yellow_flags contains unmitigated HIGH severity",
+        "action": "REJECT_IMMEDIATELY"
+      },
+      {
+        "condition": "current_state.decision is BLOCK_* or REJECT_*",
+        "action": "DO_NOT_PROCEED"
+      },
+      {
+        "condition": "sample_handoff_bundle missing any of 9 required files",
+        "action": "REJECT_PACKAGE"
+      },
+      {
+        "condition": "queue-mode-summary.json has contract_classification !== 'internal-tripp-os-runtime-trace'",
+        "action": "REJECT_PACKAGE"
+      },
+      {
+        "condition": "queue-mode-summary.json has mutation_capability !== 'none'",
+        "action": "REJECT_PACKAGE"
+      },
+      {
+        "condition": "queue-mode-summary.json has remote_capability !== 'none'",
+        "action": "REJECT_PACKAGE"
+      },
+      {
+        "condition": "queue-mode-summary.json has live_agent_capability !== 'none'",
+        "action": "REJECT_PACKAGE"
+      },
+      {
+        "condition": "queue-mode-summary.json has default_mode !== 'untraced'",
+        "action": "REJECT_PACKAGE"
+      }
+    ],
+    "soft_blocks": [
+      {
+        "condition": "test_totals.total_tests < 250",
+        "action": "FLAG_FOR_REVIEW"
+      },
+      {
+        "condition": "known_yellow_flags.length > 3",
+        "action": "FLAG_FOR_REVIEW"
+      },
+      {
+        "condition": "package.version !== expected_version",
+        "action": "FLAG_FOR_REVIEW"
+      }
+    ]
+  },
+
+  "unsafe_conditions": {
+    "secret_detection": {
+      "scan_files": [
+        "03_sample_handoff_bundle/*.json",
+        "03_sample_handoff_bundle/*.md"
+      ],
+      "patterns": [
+        "BEGIN (RSA )?PRIVATE KEY",
+        "password\\s*[=:]\\s*['\"][^'\"]+['\"]",
+        "token\\s*[=:]\\s*['\"][^'\"]+['\"]",
+        "secret\\s*[=:]\\s*['\"][^'\"]+['\"]",
+        "api_key\\s*[=:]\\s*['\"][^'\"]+['\"]",
+        "AKIA[0-9A-Z]{16}",
+        "ghp_[a-zA-Z0-9]{36}"
+      ],
+      "action_on_match": "QUARANTINE_AND_ALERT"
+    },
+    "forbidden_paths": {
+      "paths": [
+        "/shared-agent-bus/",
+        "/tripp.control/",
+        "/tripp.reason/"
+      ],
+      "scan_files": [
+        "03_sample_handoff_bundle/*.json",
+        "03_sample_handoff_bundle/*.md"
+      ],
+      "action_on_match": "REJECT_PACKAGE"
+    },
+    "live_connection_attempts": {
+      "forbidden_patterns": [
+        "fetch(",
+        "WebSocket",
+        "EventSource",
+        "XMLHttpRequest",
+        "navigator.sendBeacon"
+      ],
+      "scan_files": ["03_sample_handoff_bundle/*.md"],
+      "action_on_match": "REJECT_PACKAGE"
+    }
+  },
+
+  "operator_facing_display_fields": {
+    "status_panel": {
+      "current_marker": {
+        "source": "current_state.marker",
+        "display": "Current Tripp.OS Marker"
+      },
+      "current_decision": {
+        "source": "current_state.decision",
+        "display": "Operator Decision"
+      },
+      "test_status": {
+        "source": "test_totals",
+        "display": "Tests: {passing}/{total} PASS"
+      },
+      "safety_boundaries": {
+        "source": "safety_boundaries.status",
+        "display": "Safety Boundaries: {status}"
+      },
+      "yellow_flags_count": {
+        "source": "known_yellow_flags.length",
+        "display": "Yellow Flags: {count}"
+      }
+    },
+    "detail_panel": {
+      "handoff_bundle_files": {
+        "source": "03_sample_handoff_bundle/*",
+        "display": "Handoff Bundle Files"
+      },
+      "validation_results": {
+        "source": "validation-results.json",
+        "display": "Validation Results"
+      },
+      "safety_checklist": {
+        "source": "safety-boundary-checklist.md",
+        "display": "Safety Boundary Checklist"
+      },
+      "decision_packet": {
+        "source": "operator-decision-packet.json",
+        "display": "Operator Decision Options"
+      }
+    },
+    "alert_conditions": {
+      "safety_breached": {
+        "trigger": "safety_boundaries.status !== '10/10 HELD'",
+        "severity": "critical",
+        "message": "Tripp.OS safety boundary breached — immediate review required"
+      },
+      "tests_failing": {
+        "trigger": "test_totals.failing > 0",
+        "severity": "critical",
+        "message": "Tripp.OS tests failing — do not proceed"
+      },
+      "package_stale": {
+        "trigger": "package_age_hours > 72",
+        "severity": "warning",
+        "message": "Tripp.OS evidence package may be stale — request refresh"
+      },
+      "decision_blocked": {
+        "trigger": "current_state.decision starts with BLOCK",
+        "severity": "warning",
+        "message": "Tripp.OS traced queue is blocked — check decision packet"
+      }
+    }
+  }
+}

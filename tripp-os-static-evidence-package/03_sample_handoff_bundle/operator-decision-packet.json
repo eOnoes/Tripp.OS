@@ -1,0 +1,73 @@
+{
+  "$schema": "internal/tripp-os-trace-queue-handoff-v1",
+  "producer": "tripp-os-runtime-trace",
+  "package_name": "@tripp-os/runtime-trace",
+  "package_version": "0.1.0",
+  "generated_at": "2026-06-07T23:24:31.614Z",
+  "decisions": [
+    {
+      "id": "APPROVE_STAGING_TRACED_QUEUE",
+      "label": "Approve traced queue for staging",
+      "description": "Accept traced queue mode for controlled staging use",
+      "required_evidence": [
+        "Staging test passes (all lifecycle types observed)",
+        "Handoff bundle validates",
+        "Safety search clean",
+        "Safety checklist all HELD",
+        "Rollback tested end-to-end",
+        "Bundle validation passes"
+      ],
+      "forbidden_assumptions": [
+        "Does not approve production",
+        "Does not enable automatic tracing",
+        "Does not approve permanent enablement",
+        "Does not override operator per-instance approval"
+      ],
+      "next_marker": "READY_FOR_TRIPP_OS_TRACE_BUS_ADAPTER_STAGING_RUN_AUDIT"
+    },
+    {
+      "id": "KEEP_UNTRACED_QUEUE",
+      "label": "Keep untraced queue",
+      "description": "Continue with untraced mode, defer traced queue enablement",
+      "required_evidence": [
+        "Untraced mode validated as default",
+        "Operator understands traced mode is available on request"
+      ],
+      "forbidden_assumptions": [
+        "Does not mean traced mode is rejected forever",
+        "Does not mean traced mode is unsafe",
+        "Does not prevent future opt-in"
+      ],
+      "next_marker": "TRIPP_OS_TRACE_BUS_ADAPTER_UNTRACED_MODE_ACCEPTED"
+    },
+    {
+      "id": "REQUEST_MORE_FIXTURES",
+      "label": "Request more fixtures",
+      "description": "Current evidence insufficient; request additional fixture coverage",
+      "required_evidence": [
+        "Specific gaps identified by operator",
+        "Current bundle provided as baseline"
+      ],
+      "forbidden_assumptions": [
+        "Does not mean evidence is insufficient by default",
+        "Does not block implementation gate"
+      ],
+      "next_marker": "READY_FOR_TRIPP_OS_TRACE_BUS_ADAPTER_ADDITIONAL_FIXTURES"
+    },
+    {
+      "id": "BLOCK_TRACED_QUEUE",
+      "label": "Block traced queue",
+      "description": "Block traced queue mode due to safety or operational concerns",
+      "required_evidence": [
+        "Blocking concerns documented by operator",
+        "Bundle preserved for future re-evaluation"
+      ],
+      "forbidden_assumptions": [
+        "Does not mean traced mode is permanently unsafe",
+        "Does not prevent re-evaluation in future",
+        "Does not affect untraced mode operation"
+      ],
+      "next_marker": "TRIPP_OS_TRACE_BUS_ADAPTER_TRACED_QUEUE_BLOCKED"
+    }
+  ]
+}

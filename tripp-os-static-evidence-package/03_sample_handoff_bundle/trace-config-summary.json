@@ -1,0 +1,35 @@
+{
+  "$schema": "internal/tripp-os-trace-queue-handoff-v1",
+  "producer": "tripp-os-runtime-trace",
+  "ledger_file_name": "agent-bus-trace.jsonl",
+  "checksum_algorithm": "sha256",
+  "environments": {
+    "development": {
+      "fsyncOnAppend": false,
+      "checksumEnabled": true,
+      "rotationEnabled": true,
+      "maxLedgerBytes": 10485760,
+      "maxLedgerFiles": 10
+    },
+    "staging": {
+      "fsyncOnAppend": false,
+      "checksumEnabled": true,
+      "rotationEnabled": true,
+      "maxLedgerBytes": 52428800,
+      "maxLedgerFiles": 30
+    },
+    "production": {
+      "fsyncOnAppend": true,
+      "checksumEnabled": true,
+      "rotationEnabled": true,
+      "maxLedgerBytes": 52428800,
+      "maxLedgerFiles": 30
+    }
+  },
+  "notes": [
+    "Production: fsyncOnAppend=true for durability",
+    "Rotation: collision-safe naming (YYYY-MM-DDTHHmmss.SSS.jsonl)",
+    "Max 30 rotated files retained (~1.5GB at 50MB each)",
+    "Fallback sinks: stderr + memory required for production"
+  ]
+}

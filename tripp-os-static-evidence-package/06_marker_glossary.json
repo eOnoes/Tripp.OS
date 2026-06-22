@@ -1,0 +1,106 @@
+{
+  "$schema": "internal/tripp-os-marker-glossary-v1",
+  "description": "All Tripp.OS markers from the runtime-trace handoff lane",
+  "markers": [
+    {
+      "marker": "TRIPP_OS_BASELINE_INVENTORY_BLOCKED_UNKNOWN_DRIFT",
+      "stage": "baseline_inventory",
+      "description": "Initial baseline inventory attempt blocked due to repo unavailability"
+    },
+    {
+      "marker": "TRIPP_OS_BASELINE_RECOVERY_BLOCKED_REPO_STILL_MISSING",
+      "stage": "baseline_recovery",
+      "description": "Recovery attempt blocked — repo still unavailable"
+    },
+    {
+      "marker": "TRIPP_OS_RUNTIME_TRACE_HANDOFF_LANE_COMPLETE",
+      "stage": "handoff_lane",
+      "description": "Complete runtime-trace handoff lane closed with 130 tests passing"
+    },
+    {
+      "marker": "TRIPP_OS_TRACE_BUS_ADAPTER_ENHANCEMENTS_COMPLETE",
+      "stage": "enhancements",
+      "description": "6 enhancements implemented: CLI, diff, compression, dashboard, benchmarks"
+    },
+    {
+      "marker": "TRIPP_OS_TRACE_BUS_ADAPTER_INTEGRATION_PIPELINE_COMPLETE",
+      "stage": "integration",
+      "description": "Integration pipeline with adapter wiring and fixture tests complete"
+    },
+    {
+      "marker": "TRIPP_OS_TRACE_BUS_ADAPTER_QUEUE_COMPLETE",
+      "stage": "queue",
+      "description": "Controlled runtime queue (untraced/traced) implemented with 16 tests"
+    },
+    {
+      "marker": "TRIPP_OS_TRACE_BUS_ADAPTER_OPERATOR_HANDOFF_FIXTURE_GATE_PASS_READY_FOR_AUDIT",
+      "stage": "queue_handoff_fixture",
+      "description": "Queue operator handoff bundle fixture gate passed"
+    },
+    {
+      "marker": "TRIPP_OS_TRACE_BUS_ADAPTER_OPERATOR_HANDOFF_AUDIT_PASS_READY_FOR_OPERATOR_DECISION_GATE",
+      "stage": "queue_handoff_audit",
+      "description": "Queue operator handoff audit passed, ready for decision"
+    },
+    {
+      "marker": "TRIPP_OS_TRACE_BUS_ADAPTER_STAGING_TEST_PASS_READY_FOR_STAGING_RUN_AUDIT",
+      "stage": "staging_test",
+      "description": "Staging simulation passed — traced queue lifecycle verified"
+    },
+    {
+      "marker": "TRIPP_OS_TRACE_BUS_ADAPTER_STAGING_RUN_AUDIT_PASS_READY_FOR_OPERATOR_DEPLOYMENT_DECISION",
+      "stage": "staging_audit",
+      "description": "Staging run audit passed — event count discrepancy reconciled"
+    },
+    {
+      "marker": "APPROVE_CONTROLLED_STAGING_DEPLOYMENT",
+      "stage": "staging_decision",
+      "description": "Staging deployment approved; production requires separate readiness gate"
+    },
+    {
+      "marker": "TRIPP_OS_TRACE_BUS_ADAPTER_PRODUCTION_READINESS_GATE_DESIGN_PASS_READY_FOR_IMPLEMENTATION",
+      "stage": "prod_design",
+      "description": "8 production readiness fixtures designed"
+    },
+    {
+      "marker": "TRIPP_OS_TRACE_BUS_ADAPTER_PRODUCTION_READINESS_GATE_IMPLEMENTATION_PASS_READY_FOR_FIXTURE_AUDIT",
+      "stage": "prod_impl",
+      "description": "8 production readiness fixtures implemented, 283 tests passing"
+    },
+    {
+      "marker": "TRIPP_OS_TRACE_BUS_ADAPTER_PRODUCTION_READINESS_ROTATION_HARDENING_PASS_READY_FOR_FIXTURE_AUDIT",
+      "stage": "rotation_harden",
+      "description": "Same-day rotation overwrite fixed, collision-safe naming deployed"
+    },
+    {
+      "marker": "TRIPP_OS_TRACE_BUS_ADAPTER_PRODUCTION_READINESS_FIXTURE_AUDIT_PASS_READY_FOR_PRODUCTION_DECISION",
+      "stage": "prod_fixture_audit",
+      "description": "All 8 fixtures + 9 rotation checks passed, 291 tests"
+    },
+    {
+      "marker": "APPROVE_LIMITED_PRODUCTION_TRACED_QUEUE",
+      "stage": "prod_decision",
+      "description": "Limited production traced queue approved — explicit opt-in only"
+    },
+    {
+      "marker": "TRIPP_OS_TRACE_BUS_ADAPTER_LIMITED_PRODUCTION_ROLLOUT_PLAN_PASS_READY_FOR_INITIAL_ROLLOUT",
+      "stage": "rollout_plan",
+      "description": "8-section rollout plan approved"
+    },
+    {
+      "marker": "TRIPP_OS_TRACE_BUS_ADAPTER_INITIAL_LIMITED_PRODUCTION_ROLLOUT_PASS_READY_FOR_POST_ROLLOUT_AUDIT",
+      "stage": "initial_rollout",
+      "description": "Initial rollout executed: 300 events, 7 lifecycle types, no stops"
+    },
+    {
+      "marker": "TRIPP_OS_STATIC_EVIDENCE_PACKAGE_FOR_CONTROL_INTAKE_READY",
+      "stage": "control_intake",
+      "description": "Static evidence package compiled for Tripp.Control handoff intake"
+    },
+    {
+      "marker": "READY_FOR_TRIPP_CONTROL_OS_HANDOFF_INTAKE_BUILD",
+      "stage": "control_intake",
+      "description": "Ready for Tripp.Control to build handoff intake lane"
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "$schema": "internal/tripp-os-static-evidence-package-v1",
+  "package": {
+    "name": "@tripp-os/runtime-trace",
+    "version": "0.1.0",
+    "classification": "internal-tripp-os-runtime-trace",
+    "producer": "tripp-os-runtime-trace"
+  },
+  "current_state": {
+    "marker": "READY_FOR_TRIPP_CONTROL_OS_HANDOFF_INTAKE_BUILD",
+    "decision": "APPROVE_LIMITED_PRODUCTION_TRACED_QUEUE",
+    "decision_summary": "Traced queue mode approved for limited production rollout only. Default remains untraced. Explicit operator opt-in required per instance.",
+    "lane_status": "complete_pending_control_intake",
+    "generated_at": "2026-06-07T16:00:00Z"
+  },
+  "test_totals": {
+    "total_tests": 291,
+    "passing": 291,
+    "failing": 0,
+    "test_files": 9,
+    "source_files": 15,
+    "total_lines": 10230,
+    "barrel_exports": 22
+  },
+  "test_breakdown": {
+    "trace.test.ts": 113,
+    "production-readiness.test.ts": 12,
+    "rotation-hardening.test.ts": 8,
+    "queue-handoff.test.ts": 75,
+    "handoff-fixture.test.ts": 31,
+    "adapter-fixture.test.ts": 15,
+    "queue.test.ts": 16,
+    "handoff.test.ts": 20,
+    "adapter.test.ts": 1
+  },
+  "safety_boundaries": {
+    "status": "10/10 HELD",
+    "boundaries": [
+      { "id": "no_default_tracing", "name": "No default tracing", "status": "HELD", "evidence": "createUntracedQueue() is default factory" },
+      { "id": "no_env_var_activation", "name": "No env var activation", "status": "HELD", "evidence": "No process.env in any source file" },
+      { "id": "no_live_agents", "name": "No live agents spawned", "status": "HELD", "evidence": "No spawn, exec, child_process in source" },
+      { "id": "no_remote_server", "name": "No remote/server/API", "status": "HELD", "evidence": "No fetch, http, websocket, server.listen in source" },
+      { "id": "no_control_writes", "name": "No Tripp.Control writes", "status": "HELD", "evidence": "No Tripp.Control in source (path validation only)" },
+      { "id": "no_reason_writes", "name": "No Tripp.Reason writes", "status": "HELD", "evidence": "No Tripp.Reason in source (path validation only)" },
+      { "id": "no_shared_bus_mutation", "name": "No shared-agent-bus mutation", "status": "HELD", "evidence": "Queue ops only, no external mutation" },
+      { "id": "no_command_execution", "name": "No command execution", "status": "HELD", "evidence": "No exec, spawn, child_process in source" },
+      { "id": "no_watchers_timers", "name": "No watchers/polling/timers", "status": "HELD", "evidence": "No setInterval, setTimeout, watch, chokidar in source" },
+      { "id": "internal_contract", "name": "Internal contract only", "status": "HELD", "evidence": "contract_classification: internal-tripp-os-runtime-trace" }
+    ]
+  },
+  "known_yellow_flags": [
+    {
+      "id": "search_default_limit",
+      "description": "TraceReader.search() default limit is 100 events",
+      "severity": "low",
+      "status": "documented_non_blocking",
+      "mitigation": "Callers with >100 events pass explicit { limit: N }. High-volume tests pass { limit: 10000 }.",
+      "action_required": "none"
+    }
+  ],
+  "source_changes_log": [
+    {
+      "date": "2026-06-07",
+      "file": "src/writer.ts",
+      "change": "Collision-safe rotation naming: YYYY-MM-DDTHHmmss.SSS.jsonl",
+      "reason": "Prevent same-day rotation overwrite (production-critical)"
+    },
+    {
+      "date": "2026-06-07",
+      "file": "src/writer.ts",
+      "change": "Updated cleanupOldFiles() regex for new naming format",
+      "reason": "Match collision-safe rotated filenames"
+    },
+    {
+      "date": "2026-06-07",
+      "file": "src/__tests__/trace.test.ts",
+      "change": "Updated 9 references to match new rotation naming",
+      "reason": "Align tests with collision-safe naming"
+    }
+  ],
+  "marker_history": [
+    { "marker": "TRIPP_OS_BASELINE_INVENTORY_BLOCKED_UNKNOWN_DRIFT", "stage": "baseline" },
+    { "marker": "TRIPP_OS_BASELINE_RECOVERY_BLOCKED_REPO_STILL_MISSING", "stage": "recovery" },
+    { "marker": "TRIPP_OS_RUNTIME_TRACE_HANDOFF_LANE_COMPLETE", "stage": "handoff_lane" },
+    { "marker": "TRIPP_OS_TRACE_BUS_ADAPTER_ENHANCEMENTS_COMPLETE", "stage": "enhancements" },
+    { "marker": "TRIPP_OS_TRACE_BUS_ADAPTER_INTEGRATION_PIPELINE_COMPLETE", "stage": "integration" },
+    { "marker": "TRIPP_OS_TRACE_BUS_ADAPTER_QUEUE_COMPLETE", "stage": "queue" },
+    { "marker": "TRIPP_OS_TRACE_BUS_ADAPTER_OPERATOR_HANDOFF_FIXTURE_GATE_PASS", "stage": "queue_handoff_fixture" },
+    { "marker": "TRIPP_OS_TRACE_BUS_ADAPTER_OPERATOR_HANDOFF_AUDIT_PASS", "stage": "queue_handoff_audit" },
+    { "marker": "TRIPP_OS_TRACE_BUS_ADAPTER_STAGING_TEST_PASS", "stage": "staging_test" },
+    { "marker": "TRIPP_OS_TRACE_BUS_ADAPTER_STAGING_RUN_AUDIT_PASS", "stage": "staging_audit" },
+    { "marker": "APPROVE_CONTROLLED_STAGING_DEPLOYMENT", "stage": "staging_decision" },
+    { "marker": "TRIPP_OS_TRACE_BUS_ADAPTER_PRODUCTION_READINESS_DESIGN_PASS", "stage": "prod_design" },
+    { "marker": "TRIPP_OS_TRACE_BUS_ADAPTER_PRODUCTION_READINESS_IMPLEMENTATION_PASS", "stage": "prod_impl" },
+    { "marker": "TRIPP_OS_TRACE_BUS_ADAPTER_PRODUCTION_READINESS_ROTATION_HARDENING_PASS", "stage": "rotation_harden" },
+    { "marker": "TRIPP_OS_TRACE_BUS_ADAPTER_PRODUCTION_READINESS_FIXTURE_AUDIT_PASS", "stage": "prod_fixture_audit" },
+    { "marker": "APPROVE_LIMITED_PRODUCTION_TRACED_QUEUE", "stage": "prod_decision" },
+    { "marker": "TRIPP_OS_TRACE_BUS_ADAPTER_LIMITED_PRODUCTION_ROLLOUT_PLAN_PASS", "stage": "rollout_plan" },
+    { "marker": "TRIPP_OS_TRACE_BUS_ADAPTER_INITIAL_LIMITED_PRODUCTION_ROLLOUT_PASS", "stage": "initial_rollout" }
+  ]
+}
