@@ -1,0 +1,18 @@
+{
+  "name": "@tripp-os/workspace",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Tripp.OS workspace — agent-bus and runtime-trace packages",
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "typecheck": "npm run typecheck --workspaces",
+    "build": "npm run build --workspaces",
+    "test": "npm test --workspace=packages/runtime-trace"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
