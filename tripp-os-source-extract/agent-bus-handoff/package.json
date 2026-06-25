@@ -10,7 +10,7 @@
   "scripts": {
     "typecheck": "npm run typecheck --workspaces",
     "build": "npm run build --workspaces",
-    "test": "npm test --workspace=packages/runtime-trace"
+    "test": "npm run build --workspace=packages/agent-bus && npm test --workspace=packages/runtime-trace"
   },
   "devDependencies": {
     "typescript": "^5.0.0"
