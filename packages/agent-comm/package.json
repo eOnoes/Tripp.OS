@@ -1,0 +1,14 @@
+{
+  "name": "@tripp-os/agent-comm",
+  "version": "0.1.0",
+  "description": "HTTP-based agent communication layer with message passing and execution tracing",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "scripts": {
+    "start": "node src/index.js"
+  }
+}
